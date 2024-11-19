@@ -1,0 +1,21 @@
+{
+  "name": "moc-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon .",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jest": "^29.7.0",
+    "moc-node": "file:",
+    "mongoose": "^8.4.3",
+    "nodemon": "^3.1.3"
+  }
+}
