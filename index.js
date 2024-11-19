@@ -17,9 +17,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // Utilisation des routes définies dans routes/router.js
 app.use('/api/school', require('./routes/router'));
-app.listen(3999, () => {
-    console.log("🚀🚀 Lancement avec succès du serveur");
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(3999, () => {
+        console.log("🚀🚀 Lancement avec succès du serveur");
+    });
+}
 
 
 module.exports = app
