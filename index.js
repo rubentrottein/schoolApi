@@ -4,8 +4,26 @@ const app = express();
 
 // Connexion à la base de données
 connectDB()
-    .then(() => console.log("📦 Connexion DB réussie"))
-    .catch(error => console.error("❌ Erreur connexion DB:", error));
+    .then(() => {
+        console.log("📦 Connexion DB réussie");
+        // Ajoutez une route de test DB
+        app.get('/test-db', async (req, res) => {
+            try {
+                // Remplacez par votre modèle réel
+                const count = await YourModel.countDocuments();
+                res.json({ status: 'DB Connected', documents: count });
+            } catch (error) {
+                res.status(500).json({ error: error.message });
+            }
+        });
+    })
+    .catch(error => {
+        console.error("❌ Erreur connexion DB:", error);
+        // Ajoutez une route pour voir l'erreur
+        app.get('/db-status', (req, res) => {
+            res.status(500).json({ error: error.message });
+        });
+    });
 
 app.use(express.static('public'));
 
