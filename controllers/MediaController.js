@@ -2,8 +2,10 @@ import { NextResponse } from 'next/server';
 import ftp from 'basic-ftp';
 import { Readable } from 'stream';
 
-export async function uploadMedia(request) {
+export async function POST(request) {
     try {
+        console.log('Début de la requête');
+
         const formData = await request.formData();
         const file = formData.get('image');
 
@@ -14,56 +16,54 @@ export async function uploadMedia(request) {
             );
         }
 
-        // Convertir le fichier en buffer
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
+        console.log('Fichier reçu:', file.name);
 
-        // Créer un nom de fichier unique
-        const fileName = `${Date.now()}-${file.name}`;
-
-        // Configurer le client FTP
-        const client = new ftp.Client();
-        
+        // Configuration spécifique OVH
+        const client = new ftp.Client(30000); // timeout plus long pour OVH
         try {
+            console.log('Tentative de connexion FTP à OVH...');
             await client.access({
-                host: process.env.FTP_HOST,
+                host: 'ftp.cluster026.hosting.ovh.net', // hôte fixe
                 user: process.env.FTP_USER,
                 password: process.env.FTP_PASSWORD,
-                secure: false
+                secure: false,
+                port: 21 // port explicite
+            });
+            
+            console.log('Connexion FTP réussie');
+            
+            // Liste des dossiers pour debug
+            console.log('Liste des dossiers:');
+            await client.list();
+
+            client.close();
+            console.log('Connexion FTP fermée');
+
+            return NextResponse.json({
+                success: true,
+                message: 'Test de connexion réussi'
             });
 
-            // Convertir le buffer en stream
-            const fileStream = Readable.from(buffer);
-            
-            // Upload du fichier
-            await client.uploadFrom(fileStream, `/uploads/${fileName}`);
-
         } catch (ftpError) {
-            console.error('Erreur FTP:', ftpError);
-            throw new Error('Erreur lors de l\'upload FTP');
-        } finally {
-            client.close();
+            console.error('Erreur FTP détaillée:', ftpError);
+            return NextResponse.json(
+                { 
+                    error: 'Erreur de connexion FTP',
+                    details: ftpError.message,
+                    code: ftpError.code 
+                },
+                { status: 500 }
+            );
         }
 
-        // Construire l'URL publique du fichier
-        const fileUrl = `http://${process.env.SITE_URL}/uploads/${fileName}`;
-
-        return NextResponse.json({
-            success: true,
-            imageUrl: fileUrl
-        });
-
     } catch (error) {
-        console.error('Erreur:', error);
+        console.error('Erreur principale:', error);
         return NextResponse.json(
-            { error: error.message },
+            { 
+                error: 'Erreur serveur',
+                details: error.message 
+            },
             { status: 500 }
         );
     }
 }
-
-export const config = {
-    api: {
-        bodyParser: false,
-    },
-};

@@ -1,0 +1,71 @@
+<html>
+<head>
+    <title>Test Upload</title>
+    <style>
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .error {
+            color: red;
+        }
+        .success {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <form id="uploadForm">
+        <input type="file" name="image" id="fileInput" accept="image/*">
+        <button type="button" onclick="testUpload()">Upload</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+    async function testUpload() {
+        const resultDiv = document.getElementById('result');
+        const fileInput = document.getElementById('fileInput');
+        
+        resultDiv.innerHTML = 'Test en cours...';
+        resultDiv.className = '';
+        
+        if (!fileInput.files.length) {
+            resultDiv.innerHTML = 'Veuillez sélectionner un fichier';
+            resultDiv.className = 'error';
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+
+            const response = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Réponse non-JSON reçue du serveur');
+            }
+
+            const result = await response.json();
+            console.log('Résultat:', result);
+            
+            if (response.ok) {
+                resultDiv.innerHTML = 'Succès: ' + JSON.stringify(result, null, 2);
+                resultDiv.className = 'success';
+            } else {
+                resultDiv.innerHTML = 'Erreur: ' + JSON.stringify(result, null, 2);
+                resultDiv.className = 'error';
+            }
+        } catch (error) {
+            console.error('Erreur:', error);
+            resultDiv.innerHTML = 'Erreur: ' + error.message;
+            resultDiv.className = 'error';
+        }
+    }
+    </script>
+</body>
+</html>
