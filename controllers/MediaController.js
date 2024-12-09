@@ -1,4 +1,4 @@
-// /api/upload/route.js
+/* /api/upload/route.js
 import { NextResponse } from 'next/server';
 
 export const runtime = 'edge'; // Utilisation de l'Edge Runtime
@@ -45,3 +45,5 @@ export async function uploadMedia(request) {
         );
     }
 }
+
+/**/
