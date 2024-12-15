@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://school-api-omega.vercel.app/api/school/'; // Remplacez par l'URL de votre API
+const API_BASE_URL = 'https://school-api-omega.vercel.app/api/school'; // Remplacez par l'URL de votre API
 
 async function getAllArticles() {
     try {
