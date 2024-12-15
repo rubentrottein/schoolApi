@@ -1,6 +1,7 @@
 const express = require('express');
 const { connectDB } = require('./config/db_config');
 const app = express();
+const path = require('path');
 
 // Connexion à la base de données
 connectDB()
@@ -42,8 +43,14 @@ app.get('/test', (req, res) => {
     res.json({ status: 'API is running' });
 });
 
+
+// Servir les fichiers statiques
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
 // Utilisation des routes définies dans routes/router.js
 app.use('/api/school', require('./routes/router'));
+
+
 
 if (process.env.NODE_ENV !== 'production') {
     app.listen(3999, () => {

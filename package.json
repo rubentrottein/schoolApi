@@ -18,6 +18,7 @@
     "moc-node": "file:",
     "mongoose": "^8.4.3",
     "multer": "^1.4.5-lts.1",
+    "next": "^15.1.0",
     "next-connect": "^1.0.0",
     "nodemon": "^3.1.3"
   },

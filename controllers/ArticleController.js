@@ -1,15 +1,17 @@
-const ARTICLE = require("../models/Article");
+const article = require("../models/Article");
 const mongoose = require('mongoose');
 
-
+/** Opérations sur tous les articles */
 const getAllArticles = async ( req, res ) =>{
     try {
-        const article = await ARTICLE.find()
-        res.json( article )
+        const articleList = await article.find()
+        res.json( articleList )
     } catch (error) {
         res.json( { message: 'Error fetching Articles', error } )
     }
 }
+
+/** Opérations sur un seul article **/
 const getArticleById = async (req, res) => {
     try {
         console.log("ID brut reçu :", req.params.id); // ID brut reçu dans l'URL
@@ -21,12 +23,12 @@ const getArticleById = async (req, res) => {
 
         const articleId = new mongoose.Types.ObjectId(req.params.id);
        
-        const article = await ARTICLE.findById(articleId);
-        if (!article) {
+        const currentArticle = await article.findById(articleId);
+        if (!currentArticle) {
             return res.status(404).json({ message: 'Article not found' });
         }
 
-        res.json(article);
+        res.json(currentArticle);
     } catch (error) {
         console.error("Erreur lors de la récupération de l'article :", error); // Log l'erreur complète
         res.status(500).json({ message: 'Error fetching Article', error });
@@ -35,7 +37,7 @@ const getArticleById = async (req, res) => {
 const deleteArticle = async (req, res) => {
     try {
         const articleId = req.params.id; // ID de l'article passé dans les paramètres de l'URL
-        const deletedArticle = await ARTICLE.findByIdAndDelete(articleId);
+        const deletedArticle = await article.findByIdAndDelete(articleId);
 
         if (!deletedArticle) {
             return res.status(404).json({ message: 'Article non trouvé' });
@@ -50,7 +52,7 @@ const deleteArticle = async (req, res) => {
 
 const createArticle = async (req, res) =>{
     try {
-        const newArticle = new ARTICLE({
+        const newArticle = new article({
             title: req.body.title,
             author: req.body.author,
             image: req.body.image,
@@ -65,11 +67,45 @@ const createArticle = async (req, res) =>{
     
         await newArticle.save();
         
-        res.json({ "message": "Nouvel article créé", "summary": { text: newArticle.title } });
+        res.json({ "message": "Nouvel article créé", "summary": { id: newArticle._id, title: newArticle.title } });
     } catch (error) {
         res.json({ "message": "Erreur dans la création d'un article", "error": error });
-    }    
+    }
 }
 
+const updateArticle = async (req, res) => {
+    try {
+        const articleId = req.params.id; // Récupération de l'ID depuis les paramètres
+        const updateData = req.body; // Données envoyées dans le corps de la requête
 
-module.exports = { getAllArticles, createArticle, getArticleById, deleteArticle }
+        // Vérifier si l'article existe
+        const originalArticle = await article.findById(articleId);
+        if (!originalArticle) {
+            return res.status(404).json({ error: "Article non trouvé." });
+        }
+
+        // Mettre à jour uniquement les champs valides et non vides
+        Object.keys(updateData).forEach((key) => {
+            const value = updateData[key];
+            if (value !== undefined && value !== "") {
+                originalArticle[key] = value; // Mise à jour des champs spécifiques
+            }
+        });
+
+        // Sauvegarder les modifications
+        const updatedArticle = await originalArticle.save();
+
+        // Répondre avec l'article mis à jour
+        res.status(200).json({
+            message: "Article mis à jour avec succès.",
+            article: updatedArticle,
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: "Une erreur est survenue lors de la mise à jour.",
+            details: error.message,
+        });
+    }
+};
+
+module.exports = { getAllArticles, createArticle, getArticleById, updateArticle, deleteArticle }

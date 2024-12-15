@@ -1,0 +1,78 @@
+*{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+header {
+    background: #444;
+    background-color: seagreen;
+    border-radius: 0 0 1em 1em;
+    color: whitesmoke;
+    padding: .5em 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+main{
+    box-shadow: 0 0 1px #444;
+    padding: 1em;
+    margin: 2em auto;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    width: 80%;
+}
+section{
+    padding: 1em;
+    margin: 1em auto;
+    border-radius: 5px;
+}
+section h2{
+    margin: .5em;
+}
+label {
+    display: block;
+    margin: 5px 0;
+}
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+button {
+    background-color: rebeccapurple;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #0056b3;
+}
+pre {
+    background: black;
+    color: #eee;
+    padding: 10px;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.get-all{ background: steelblue; color: white;}
+.get-id{ background: royalblue; color: white;}
+.create{ background: seagreen; color: white;}
+.update{ background: orange; color: white;}
+.delete{ background: tomato; color: white;}
+.darkMode{ background: black; color: white;}
+#darkMode{
+    background: black;
+    color: gold;
+    border-radius: 50%;
+    width: 10vmin;
+    height: 10vmin;
+    font-size: 2em;
+    padding:0;
+}

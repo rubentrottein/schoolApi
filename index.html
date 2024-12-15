@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>API Test - Hedgehog School</title>
+        <link rel="stylesheet" href="/public/css/style.css">
+        <script src="/public/js/script.js" defer></script>
+    </head>
+    <body>
+    <header>
+        <h1>API Test Page - Hedgehog School</h1>
+        <p>Cette page permet de tester les fonctionnalités de DuckDrive API.</p>
+        <button id="darkMode">🌙</button>
+    </header>
+    <main>
+        <!-- Section: Get All Articles -->
+        <section class="get-all">
+            <h2>1. Récupérer tous les articles</h2>
+            <button onclick="getAllArticles()">Récupérer les articles</button>
+            <pre id="all-articles-output">Résultat ici...</pre>
+        </section>
+
+        <!-- Section: Get Article by ID -->
+        <section class="get-id">
+            <h2>2. Récupérer un article par ID</h2>
+            <label for="get-article-id">ID de l'article :</label>
+            <input type="text" id="get-article-id" placeholder="Exemple : 60d5fdd68c1234567890abcd">
+            <button onclick="getArticleById()">Récupérer l'article</button>
+            <pre id="article-by-id-output">Résultat ici...</pre>
+        </section>
+
+        <!-- Section: Create Article -->
+        <section class="create">
+            <h2>3. Créer un nouvel article</h2>
+            <form id="create-article-form" onsubmit="createArticle(event)">
+                <label for="title">Titre :</label>
+                <input type="text" id="title" name="title" required>
+
+                <label for="author">Auteur :</label>
+                <input type="text" id="author" name="author" required>
+
+                <label for="image">Image URL :</label>
+                <input type="text" id="image" name="image">
+
+                <label for="alt">Texte alternatif :</label>
+                <input type="text" id="alt" name="alt">
+
+                <label for="intro">Introduction :</label>
+                <textarea id="intro" name="intro"></textarea>
+
+                <label for="content">Contenu :</label>
+                <textarea id="content" name="content"></textarea>
+
+                <button type="submit">Créer l'article</button>
+            </form>
+            <pre id="create-article-output">Résultat ici...</pre>
+        </section>
+        <section>
+            <h2>⚡ Attention</h2>
+            <b>>Modifications de la BDD</b>
+            <hr>
+        </section>
+        <!-- Section: Update Article -->
+        <section class="update">
+            <h2>5. Mettre à jour un article</h2>
+            <label for="update-article-id">ID de l'article :</label>
+            <input type="text" id="update-article-id" placeholder="Exemple : 60d5fdd68c1234567890abcd" required>
+
+            <form id="update-article-form" onsubmit="updateArticle(event)">
+                <label for="update-title">Titre :</label>
+                <input type="text" id="update-title" name="title" placeholder="Nouveau titre">
+
+                <label for="update-author">Auteur :</label>
+                <input type="text" id="update-author" name="author" placeholder="Nouvel auteur">
+
+                <label for="update-image">Image URL :</label>
+                <input type="text" id="update-image" name="image" placeholder="Nouvelle URL de l'image">
+
+                <label for="update-alt">Texte alternatif :</label>
+                <input type="text" id="update-alt" name="alt" placeholder="Nouveau texte alternatif">
+
+                <label for="update-intro">Introduction :</label>
+                <textarea id="update-intro" name="intro" placeholder="Nouvelle introduction"></textarea>
+
+                <label for="update-content">Contenu :</label>
+                <textarea id="update-content" name="content" placeholder="Nouveau contenu"></textarea>
+
+                <button type="submit">Mettre à jour l'article</button>
+            </form>
+            <pre id="update-article-output">Résultat ici...</pre>
+        </section>
+
+
+        <!-- Section: Delete Article -->
+        <section class="delete">
+            <h2>4. Supprimer un article</h2>
+            <label for="delete-article-id">ID de l'article :</label>
+            <input type="text" id="delete-article-id" placeholder="Exemple : 60d5fdd68c1234567890abcd">
+            <button onclick="deleteArticle()">Supprimer l'article</button>
+            <pre id="delete-article-output">Résultat ici...</pre>
+        </section>
+    </main>
+</body>
+</html>

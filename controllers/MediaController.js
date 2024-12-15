@@ -1,9 +1,9 @@
-/* /api/upload/route.js
-import { NextResponse } from 'next/server';
+/* /api/upload/route.js */
 
-export const runtime = 'edge'; // Utilisation de l'Edge Runtime
+const { NextResponse } = require("next/server");
 
-export async function uploadMedia(request) {
+const runtime = 'edge'; // Utilisation de l'Edge Runtime
+const uploadMedia = async ( request, response ) =>{
     try {
         console.log('Début de la requête');
         
@@ -46,4 +46,4 @@ export async function uploadMedia(request) {
     }
 }
 
-/**/
+module.exports = { uploadMedia }
